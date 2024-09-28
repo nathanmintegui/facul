@@ -8,15 +8,15 @@ const int idadeMaximaMeiaEntrada = 65;
 char arr[4][20] = {"É assim que acaba", "Deadpool e Wolwerine",
                    "Divertidamente 2", "Armadilha"};
 
-float calcularValorIngresso(int quantidade, int idade) {
+float calcularValorIngresso(int idade) {
   bool isMeiaEntrada =
       idade < idadeMinimaMeiaEntrada || idade > idadeMaximaMeiaEntrada;
 
   if (isMeiaEntrada) {
-    return (valorIngresso / 2.0) * quantidade;
+    return valorIngresso / 2.0;
   }
 
-  return valorIngresso * quantidade;
+  return valorIngresso;
 }
 
 void renderizarFilmesEmCartaz() {
@@ -54,15 +54,18 @@ int main(void) {
     quantidade = 1;
   }
 
-  printf("Quantos anos: ");
-  scanf("%d", &idade);
+  for (int idx = 1; idx <= quantidade; idx++) {
+    printf("Ingresso %d -> quantos anos? ", idx);
+    scanf("%d", &idade);
 
-  if (idade < 1 || idade > 140) {
-    printf("Idade inválida");
-    return 0;
+    if (idade < 1 || idade > 140) {
+      printf("Idade inválida");
+      return 0;
+    }
+
+    valorTotal += calcularValorIngresso(idade);
   }
 
-  valorTotal = calcularValorIngresso(quantidade, idade);
   char *filmeEscolhido = getFilmeEscolhido(opcao);
 
   printf("Você escolheu o filme:\n%s, \no valor total é de R$%.2f\n",

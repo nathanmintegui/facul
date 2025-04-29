@@ -1,0 +1,127 @@
+/* cadastro, pesquisa e remoção de dados de uma disciplina*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct Aluno {
+  char nome[50];
+  int matricula;
+  double g1,g2;
+};
+
+struct Nodo {
+  Aluno dado;
+  struct Nodo *ant;
+  struct Nodo *prox;
+};
+typedef struct Nodo nodo;
+
+struct Descritor {
+  int n;
+  struct Nodo *prim;
+  struct Nodo *ult;
+};
+typedef struct Descritor descritor;
+
+void renderizarMenu() {
+  printf("1. Cadastrar aluno\n");
+  printf("2. Pesquisar aluno\n");
+  printf("3. Remover aluno\n");
+}
+
+void limparBuffer() {
+  int c;
+  while((c = getchar()) != '\n' && c != EOF) {}
+}
+
+int renderizarInput() {
+  int opcao;
+  
+  printf("Digite uma opção: ");
+
+  /**
+   * NOTE: scanf retorna 1 quando lê um inteiro corretamente,
+   * logo, quando diferente de 1 indica input inválido.
+   */
+  if(scanf("%d", &opcao) != 1) {
+    printf("[ERROR]: Input inválido! Informe apenas números.\n");
+    limparBuffer();
+    return renderizarInput();
+  }
+
+  if(opcao < 1 || opcao > 3) {
+    printf("[ERROR]: Opção inválida! Informe um número de 1 a 3.\n");
+    return renderizarInput();
+  }
+
+  return opcao;
+}
+
+struct Aluno* renderizarCadastroAluno() {
+  printf("========================\n");
+  printf("Menu de Cadastro de Alunos\n");
+  printf("========================\n");
+
+  printf("1. Cadastrar \n");
+  printf("2. Voltar \n");
+
+  int opcao = renderizarInput();
+  
+  if ( opcao == 2 ) {
+    return NULL;
+  }
+
+  if ( opcao == 1 ) {
+    struct Aluno *aluno = (struct Aluno *)malloc(sizeof(struct Aluno));
+
+    /*
+     * Checagem do malloc.
+     */
+    if ( aluno == NULL ) {
+      printf("[ERROR]: Error ao alocar memória.\n");
+      exit(1);
+    }
+    
+    printf("Digite o nome do aluno: ");
+    scanf("%s", aluno->nome); /* TODO: validate input */
+
+    printf("Digite o número de matrícula: ");
+    scanf("%d", &aluno->matricula);
+
+    printf("Digite a nota da G1: ");
+    scanf("%lf", &aluno->g1);
+
+    printf("Digite a nota da G2: ");
+    scanf("%lf", &aluno->g2);
+
+    return aluno;
+  }
+}
+
+int main() {
+  printf("Hello World!\n");
+
+  printf("===================\n");
+  printf("Sistema de disciplinas\n");
+  printf("===================\n");
+
+  while ( true ) {
+    renderizarMenu();
+    int opcao = renderizarInput();
+
+    /* Cadastrar Aluno  */
+    if ( opcao == 1 ) {
+      struct Aluno *aluno = (struct Aluno *)malloc(sizeof(struct Aluno));
+      
+      while ( aluno != NULL ) {
+	aluno = renderizarCadastroAluno();
+	//list.add(aluno)
+	free( aluno );
+      }
+    }
+  }
+  
+  return 0;
+}
+
